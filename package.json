@@ -1,7 +1,7 @@
 {
   "name": "rn-media-cache",
   "version": "0.1.0",
-  "description": "test",
+  "description": "React Native Media Cache",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/index.d.ts",
