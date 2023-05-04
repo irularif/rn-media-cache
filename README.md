@@ -11,12 +11,28 @@ npm install rn-media-cache
 ## Usage
 
 ```js
-import { multiply } from 'rn-media-cache';
+import { MediaCacheProvider } from 'rn-media-cache';
 
 // ...
 
-const result = await multiply(3, 7);
+<MediaCacheProvider>
+    // ...
+</MediaCacheProvider>
 ```
+
+```js
+import { Image } from 'rn-media-cache';
+
+// ...
+
+<Image
+    thumbnailSource={{ uri: thumbnailUri }}
+    source={{ uri }}
+    style={styles.image}
+    resizeMode="cover"
+/>
+```
+
 
 ## Contributing
 
