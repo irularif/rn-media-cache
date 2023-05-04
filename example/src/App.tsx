@@ -22,7 +22,7 @@ export default function App() {
   }, []);
 
   return (
-    <MediaCacheProvider>
+    <MediaCacheProvider maxProcess={8}>
       <FlatList
         data={items}
         renderItem={(item) => <Item {...item} />}
