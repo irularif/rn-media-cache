@@ -1,4 +1,5 @@
 import React, { ReactNode, useEffect } from 'react';
+import PreviewProvider from '../ImagePreview/PreviewProvider';
 import MediaCached from '../helper/downloader';
 
 interface IMediaCacheProvider {
@@ -18,7 +19,8 @@ const MediaCacheProvider = (props: IMediaCacheProvider) => {
       MediaCached.pause();
     };
   }, []);
-  return <>{props.children}</>;
+
+  return <PreviewProvider>{props.children}</PreviewProvider>;
 };
 
 export default MediaCacheProvider;

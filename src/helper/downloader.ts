@@ -317,6 +317,12 @@ class MediaCache {
     };
   }
 
+  cancel(id: string) {
+    this.items.forEach((item) => {
+      item.removeCallback(id);
+    });
+  }
+
   pause() {
     if (this.status === 'complete') {
       return;

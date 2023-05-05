@@ -8,11 +8,12 @@ import type {
 import { Image as RNImage } from 'react-native';
 import MediaCached from '../helper/downloader';
 
-interface ImageProps extends RNImageProps {
+export interface ImageProps extends Omit<RNImageProps, 'blurRadius'> {
   thumbnailSource?: ImageSourcePropType;
+  blurWhenLoading?: boolean;
 }
 
-const Image = (props: ImageProps) => {
+const ImageBase = (props: ImageProps) => {
   const [uri, setUri] = useState('');
   const [progress, setProgress] = useState(0);
 
@@ -35,15 +36,17 @@ const Image = (props: ImageProps) => {
       android: 1,
       ios: 15,
     });
-    if (typeof props.source !== 'number') {
-      if (uri) {
-        return 0;
+    if (props.blurWhenLoading) {
+      if (typeof props.source !== 'number') {
+        if (uri) {
+          return 0;
+        }
+        let _blurRadius = intensity - (progress / 100) * intensity;
+        return _blurRadius;
       }
-      let _blurRadius = intensity - (progress / 100) * intensity;
-      return _blurRadius;
     }
     return 0;
-  }, [props.source, progress, uri]);
+  }, [props.source, props.blurWhenLoading, progress, uri]);
 
   useEffect(() => {
     let remove = () => {};
@@ -76,5 +79,13 @@ const Image = (props: ImageProps) => {
 
   return <RNImage {...props} source={source} blurRadius={blurRadius} />;
 };
+
+const Image = Object.assign(ImageBase, {
+  getSize: RNImage.getSize,
+  getSizeWithHeaders: RNImage.getSizeWithHeaders,
+  resolveAssetSource: RNImage.resolveAssetSource,
+  prefetch: MediaCached.get,
+  abortPrefetch: MediaCached.cancel,
+});
 
 export default Image;

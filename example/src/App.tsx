@@ -1,66 +1,26 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
-import {
-  Dimensions,
-  FlatList,
-  ListRenderItemInfo,
-  StyleSheet,
-  View,
-} from 'react-native';
-import { Image, MediaCacheProvider } from 'rn-media-cache';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { MediaCacheProvider } from 'rn-media-cache';
+import ImageScreen from './Image';
+import VideoScreen from './Video';
+import { NavigationContainer } from '@react-navigation/native';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-const { width } = Dimensions.get('screen');
-const imageW = (width - 24 - 8 * 3) / 3;
+const Tab = createBottomTabNavigator();
+const queryClient = new QueryClient();
 
 export default function App() {
-  const items = useMemo(() => {
-    let _items = [];
-    for (let index = 1; index <= 100; index++) {
-      _items.push(index);
-    }
-    return _items;
-  }, []);
-
   return (
-    <MediaCacheProvider maxProcess={8}>
-      <FlatList
-        data={items}
-        renderItem={(item) => <Item {...item} />}
-        numColumns={3}
-        contentContainerStyle={styles.list}
-      />
-    </MediaCacheProvider>
+    <NavigationContainer>
+      <MediaCacheProvider maxProcess={8}>
+        <QueryClientProvider client={queryClient}>
+          <Tab.Navigator>
+            <Tab.Screen name="Image" component={ImageScreen} />
+            <Tab.Screen name="Video" component={VideoScreen} />
+          </Tab.Navigator>
+        </QueryClientProvider>
+      </MediaCacheProvider>
+    </NavigationContainer>
   );
 }
-
-const Item = ({ item }: ListRenderItemInfo<number>) => {
-  const source = 'https://loremflickr.com';
-  const uri = `${source}/1024/1024/beach?lock=${item}.jpg`;
-  const thumbnailUri = `${source}/200/200/beach?lock=${item}.jpg`;
-
-  return (
-    <View style={styles.imageWrapper}>
-      <Image
-        thumbnailSource={{ uri: thumbnailUri }}
-        source={{ uri }}
-        style={styles.image}
-        resizeMode="cover"
-      />
-    </View>
-  );
-};
-
-const styles = StyleSheet.create({
-  list: {
-    paddingHorizontal: 12,
-    paddingVertical: 24,
-  },
-  imageWrapper: {
-    padding: 4,
-  },
-  image: {
-    borderRadius: 8,
-    width: imageW,
-    height: imageW,
-  },
-});

@@ -160,7 +160,9 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.18.1",
+    "expo-constants": "^14.2.1",
     "expo-crypto": "^12.2.2",
-    "expo-file-system": "^15.2.2"
+    "expo-file-system": "^15.2.2",
+    "react-native-image-pan-zoom": "^2.1.12"
   }
 }
